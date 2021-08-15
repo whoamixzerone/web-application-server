@@ -15,7 +15,10 @@
 * 각 요구사항을 구현하는 것이 중요한 것이 아니라 구현 과정을 통해 학습한 내용을 인식하는 것이 배움에 중요하다. 
 
 ### 요구사항 1 - http://localhost:8080/index.html로 접속시 응답
-* 
+* Socket을 통해 Server, Client를 연결해주는 connection을 생성한다.
+* InputStream을 통해 클라이언트가 전송하는 데이터를 서버에서 읽을 수 있다.
+* OutputStream을 통해 서버가 클라이언트한테 전송해야 하는 데이터를 전송할 수 있다.
+* InputStream은 BufferedReader(new InputStreamReader)을 통해 라인별로 읽을 수 있다.
 
 ### 요구사항 2 - get 방식으로 회원가입
 * 
