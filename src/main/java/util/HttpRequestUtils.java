@@ -16,7 +16,7 @@ public class HttpRequestUtils {
     /**
      * 
      * @param line HttpRequest Header 정보 라인
-     * @return url
+     * @return url 페이지 주소
      */
     public static String getUrl(String line) {
         String[] tokens = line.split(" ");
