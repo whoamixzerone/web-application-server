@@ -14,7 +14,6 @@ public class HttpRequestUtils {
     private static final Logger log = LoggerFactory.getLogger(HttpRequestUtils.class);
     
     /**
-     * 
      * @param line HttpRequest Header 정보 라인
      * @return url 페이지 주소
      */
