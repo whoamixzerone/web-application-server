@@ -13,6 +13,11 @@ import org.slf4j.LoggerFactory;
 public class HttpRequestUtils {
     private static final Logger log = LoggerFactory.getLogger(HttpRequestUtils.class);
     
+    /**
+     * 
+     * @param line HttpRequest Header 정보 라인
+     * @return url
+     */
     public static String getUrl(String line) {
         String[] tokens = line.split(" ");
         log.debug("url : {}", tokens[1]);

@@ -39,10 +39,10 @@ public class RequestHandler extends Thread {
 
             String url = HttpRequestUtils.getUrl(line);
 
-            // while(!line.equals("")) {
-            //     line = br.readLine();
-            //     log.debug("header : {}", line);
-            // }
+            while(!line.equals("")) {
+                line = br.readLine();
+                log.debug("header : {}", line);
+            }
 
             DataOutputStream dos = new DataOutputStream(out);
             byte[] body = Files.readAllBytes(new File("./webapp" + url).toPath());
