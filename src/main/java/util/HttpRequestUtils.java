@@ -20,6 +20,7 @@ public class HttpRequestUtils {
     public static String getUrl(String line) {
         String[] tokens = line.split(" ");
         log.debug("url : {}", tokens[1]);
+
         return tokens[1];
     }
 

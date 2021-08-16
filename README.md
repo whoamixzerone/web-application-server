@@ -21,10 +21,22 @@
 * InputStream은 BufferedReader(new InputStreamReader)을 통해 라인별로 읽을 수 있다.
 
 ### 요구사항 2 - get 방식으로 회원가입
-* 
+* GET 요청 URL에 접근경로와 데이터가 포함되어 있다.
+* ? 이전에는 접근 경로가 있다.
+* ? 이후에는 "이름=값" 데이터가 있다.
+* 데이터는 "이름=값&이름=값" 형태로 '&' 문자로 데이터가 이어져 있다.
 
 ### 요구사항 3 - post 방식으로 회원가입
-* 
+* POST 요청은 GET과 다르게 URL에 데이터가 포함되어 있지 않다.
+* 데이터는 HTTP 본문에 담겨져 있다.
+* HTTP 본문은 HTTP 헤더 이후 빈 공백을 가지는 한 줄(line) 다음부터 시작한다.
+* HTTP 본문에 전달되는 데이터 형식은 GET과 동일하다.
+* 본문의 길이는 "Content-Length" 값으로 확인할 수 있다.
+
+```java
+char[] body = new char[contentLength];
+BufferedReader.read(body, 0, contentLength);
+```
 
 ### 요구사항 4 - redirect 방식으로 이동
 * 
