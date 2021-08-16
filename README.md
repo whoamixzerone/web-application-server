@@ -39,7 +39,7 @@ BufferedReader.read(body, 0, contentLength);
 ```
 
 ### 요구사항 4 - redirect 방식으로 이동
-* 
+* 하이퍼텍스트 전송 프로토콜(HTTP)의 302 Found 리다이렉트 상태 응답 코드는 클라이언트가 요청한 리소스가 Location 헤더에 주어진 URL에 일시적으로 이동되었음을 가리킨다.
 
 ### 요구사항 5 - cookie
 * 
