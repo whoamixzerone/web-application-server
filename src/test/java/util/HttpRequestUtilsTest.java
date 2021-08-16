@@ -3,13 +3,32 @@ package util;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.junit.Test;
 
 import util.HttpRequestUtils.Pair;
 
 public class HttpRequestUtilsTest {
+    @Test
+    public void lambdaTest() {
+        String test = "userId=javajigi&password=password2";
+        String[] tokens = test.split("&");
+        Arrays.stream(tokens).map(t -> HttpRequestUtils.getKeyValue(t, "=")).forEach(s -> System.out.println(s));
+        Map<String, String> map = new HashMap<>() {
+            {
+                put("userId", "javajigi");
+                put("password", "password2");
+            }
+        };
+        assertEquals(map, Arrays.stream(tokens).map(t -> HttpRequestUtils.getKeyValue(t, "="))
+            .filter(p -> p != null).collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue())));
+    }
+
     @Test
     public void parseQueryString() {
         String queryString = "userId=javajigi";

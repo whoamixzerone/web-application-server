@@ -15,6 +15,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import db.DataBase;
 import model.User;
 import util.HttpRequestUtils;
 import util.IOUtils;
@@ -43,7 +44,7 @@ public class RequestHandler extends Thread {
             String url = HttpRequestUtils.getUrl(line);
             Map<String, String> headers = new HashMap<>();
             while(!line.equals("")) {
-                log.debug("header : {}", line);
+                // log.debug("header : {}", line);
                 line = br.readLine();
                 String[] headerTokens = line.split(": ");
                 if(headerTokens.length == 2) {
@@ -60,8 +61,30 @@ public class RequestHandler extends Thread {
                 User user = new User(params.get("userId"), params.get("password"), params.get("name"), params.get("email"));
                 log.debug("user : {}", user);
 
+                DataBase.addUser(user);
+
                 DataOutputStream dos = new DataOutputStream(out);
                 response302Header(dos);
+            } else if(url.equals("/user/login")) {
+                String requestBody = IOUtils.readData(br, Integer.parseInt(headers.get("Content-Length")));
+                log.debug("Request Body : {}", requestBody);
+                Map<String, String> params = HttpRequestUtils.parseQueryString(requestBody);
+                log.debug("user : {}, password : {}", params.get("userId"), params.get("password"));
+                User user = DataBase.findUserById(params.get("userId"));
+                if(user == null) {
+                    log.debug("Use Not Found!");
+                    DataOutputStream dos = new DataOutputStream(out);
+                    response302Header(dos);
+                } else if(user.getPassword().equals(params.get("password"))) {
+                    log.debug(">>>>>>>>>>>> login success!!");
+                    DataOutputStream dos = new DataOutputStream(out);
+                    response302HeaderWithCookie(dos, "logined=true");
+                } else {
+                    log.debug(">>>>>>>>>>>> Password Mismatch!");
+                    DataOutputStream dos = new DataOutputStream(out);
+                    response302Header(dos);
+                }
+
             } else {
                 DataOutputStream dos = new DataOutputStream(out);
                 byte[] body = Files.readAllBytes(new File("./webapp" + url).toPath());
@@ -73,17 +96,28 @@ public class RequestHandler extends Thread {
             log.error(e.getMessage());
         }
     }
-
-    private void response302Header(DataOutputStream dos) {
+    
+    private void response302HeaderWithCookie(DataOutputStream dos, String cookie) {
         try {
             dos.writeBytes("HTTP/1.1 302 Found \r\n");
-            dos.writeBytes("Location: /index.html");
+            dos.writeBytes("Location: /index.html\r\n");
+            dos.writeBytes("Set-Cookie: " + cookie + "\r\n");
             dos.writeBytes("\r\n");
         } catch (IOException e) {
             log.error(e.getMessage());
         }
     }
-    
+
+    private void response302Header(DataOutputStream dos) {
+        try {
+            dos.writeBytes("HTTP/1.1 302 Found \r\n");
+            dos.writeBytes("Location: /index.html\r\n");
+            dos.writeBytes("\r\n");
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
+    }
+
     private void response200Header(DataOutputStream dos, int lengthOfBodyContent) {
         try {
             dos.writeBytes("HTTP/1.1 200 OK \r\n");
